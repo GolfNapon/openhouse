@@ -460,12 +460,9 @@ document.getElementById('regForm').addEventListener('submit', async (e)=>{
   try{
     let list = [];
     try{
-      const existing = await fetch("https://script.google.com/macros/s/AKfycbz6j5bA4SJcUA1AxRe-BvDhwgF1-gY4EP-nDpqUmfwf72BlLbaT1OHfGcg_PXq1jWhF/exec", {
-  method: "POST",
-  mode: "no-cors",
-  headers: { "Content-Type": "text/plain" },
-  body: JSON.stringify(record)
-});
+      const existing = await window.storage.get('registrations', true);
+      if(existing && existing.value) list = JSON.parse(existing.value);
+    }catch(err){ list = []; }
 
     list.push(record);
     const result = await window.storage.set('registrations', JSON.stringify(list), true);
